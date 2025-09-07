@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Downhill Tracks</h1>
+<div class="tracks">
+    {% for track in tracks %}
+    <div class="track">
+        <h3>{{ track.name }}</h3>
+        <p>{{ track.description }}</p>
+        <span class="difficulty">{{ track.difficulty }}</span>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
