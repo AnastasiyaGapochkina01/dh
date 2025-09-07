@@ -3,13 +3,6 @@ def GIT_URL = "git@github.com:AnastasiyaGapochkina01/dh.git"
 pipeline {
     agent any
 
-    parameters {
-    gitParameter type: 'PT_BRANCH', name: 'REVISION',
-                 branchFilter: 'origin/(.*)',
-                 defaultValue: 'main',
-                 selectedValue: 'DEFAULT',
-                 sortMode: 'DESCENDING_SMART'
-    }
     
     environment {
         COMPOSE_FILE = 'compose.yml'
@@ -23,7 +16,7 @@ pipeline {
     stages {
         stage('Fetch repo') {
             steps {
-                git branch: "{params.REVISION}", url: "${GIT_URL}"
+                git branch: "main", url: "${GIT_URL}"
             }
         }
         stage('Prepare') {
