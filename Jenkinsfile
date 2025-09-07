@@ -36,8 +36,8 @@ pipeline {
         stage('Cleanup'){
             steps {
                 script {
-                    //def oldColor = (env.TARGET_COLOR == 'blue') ? 'green' : 'blue'
-                    echo "${env.TARGET_COLOR}"
+                    env.OLD_COLOR = (env.TARGET_COLOR == 'blue') ? 'green' : 'blue'
+                    echo "${env.OLD_COLOR}"
                 }
             }
         }
