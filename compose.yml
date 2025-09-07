@@ -1,7 +1,6 @@
 services:
   app-blue:
-    build: .
-    #image: ${APP_IMAGE}:blue
+    image: ${APP_IMAGE}:blue
     depends_on:
       db:
         condition: service_healthy
@@ -19,8 +18,7 @@ services:
       start_period: 5s
 
   app-green:
-    build: .
-    #image: ${APP_IMAGE}:green
+    image: ${APP_IMAGE}:green
     depends_on:
       db:
         condition: service_healthy
