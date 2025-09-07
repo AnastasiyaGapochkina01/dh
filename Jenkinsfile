@@ -132,8 +132,7 @@ def switchTraffic(color) {
         export APP_NAME=app-${color} ; envsubst < ./nginx/downhill.conf.tmpl > ./nginx/downhill.conf
         #sed -i 's/proxy_pass http:\\/\\/app-.*;/proxy_pass http:\\/\\/app-${color}:8000;/' ./nginx/downhill.conf
         docker compose -f ${env.COMPOSE_FILE} up -d load-balancer
-        # Перезагружаем nginx
-        #docker compose -f ${env.COMPOSE_FILE} exec load-balancer nginx -s reload
+        docker compose -f ${env.COMPOSE_FILE} exec load-balancer nginx -s reload
     """
     
     echo "Traffic switched to ${color} environment"
