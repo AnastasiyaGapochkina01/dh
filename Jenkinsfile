@@ -29,7 +29,7 @@ pipeline {
           loadEnv()
           env.TARGET_COLOR = (env.CURRENT_COLOR == 'blue') ? 'green' : 'blue'
           env.APP_IMAGE = (env.TARGET_COLOR == 'blue') ? env.BLUE_APP_IMAGE : env.GREEN_APP_IMAGE
-          echo "Deploy ${env.APP_IMAGE}
+          echo "Deploy ${env.APP_IMAGE}"
         }
       }
     }
