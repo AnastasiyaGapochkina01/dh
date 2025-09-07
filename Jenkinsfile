@@ -33,6 +33,14 @@ pipeline {
                 }
             }
         }
+        stage('Cleanup'){
+            steps {
+                script {
+                    def oldColor = (env.TARGET_COLOR == 'blue') ? 'green' : 'blue'
+                    echo "${env.oldColor}"
+                }
+            }
+        }
         
     }
 }
