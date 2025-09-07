@@ -1,6 +1,7 @@
 services:
   app-blue:
     image: ${BLUE_APP_IMAGE}
+    container_name: ${PRJ_NAME}-blue
     depends_on:
       db:
         condition: service_healthy
@@ -19,6 +20,7 @@ services:
 
   app-green:
     image: ${GREEN_APP_IMAGE}
+    container_name: ${PRJ_NAME}-green
     depends_on:
       db:
         condition: service_healthy
@@ -37,6 +39,7 @@ services:
 
   load-balancer:
     image: nginx
+    ${PRJ_NAME}-lb
     ports:
       - 80:80
       - 443:443
@@ -51,6 +54,7 @@ services:
   db:
     image: postgres:15
     restart: always
+    ${PRJ_NAME}-db
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
