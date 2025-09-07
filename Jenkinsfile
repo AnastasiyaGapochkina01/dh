@@ -23,7 +23,7 @@ pipeline {
     stages {
         stage('Fetch repo') {
             steps {
-                git branch: "main", url: "${GIT_URL}"
+                git branch: "{params.REVISION}", url: "${GIT_URL}"
             }
         }
         stage('Prepare') {
