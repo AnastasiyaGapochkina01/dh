@@ -8,7 +8,7 @@ pipeline {
         COMPOSE_FILE = 'compose.yml'
         BLUE_APP_IMAGE = 'anestesia01/demo:blue'
         GREEN_APP_IMAGE = 'anestesia01/demo:green'
-        CURRENT_COLOR = 'blue'
+        //CURRENT_COLOR = 'blue'
         DOCKER_REPO = "anestesia01/demo"
         TOKEN = credentials('docker_token')
         USERNAME = "anestesia01"
@@ -23,7 +23,8 @@ pipeline {
             steps {
                 script {
                     loadEnvironmentVariables()
-                    echo "${env.CURRENT_COLOR}"
+                    env.CURRENT_COLOR = sh(script: "docker ps --format '{{.Names}}' | grep -Ev '(lb|db)' | cut -d- -f2", returnStdout: true).trim()
+                    //echo "${env.CURRENT_COLOR}"
                     
                     env.TARGET_COLOR = (env.CURRENT_COLOR == 'blue') ? 'green' : 'blue'
                     echo "Deploying to ${env.TARGET_COLOR} environment"
