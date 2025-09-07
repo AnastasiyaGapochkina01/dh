@@ -23,6 +23,7 @@ pipeline {
             steps {
                 script {
                     loadEnvironmentVariables()
+                    echo "${env.CURRENT_COLOR}"
                     
                     env.TARGET_COLOR = (env.CURRENT_COLOR == 'blue') ? 'green' : 'blue'
                     echo "Deploying to ${env.TARGET_COLOR} environment"
@@ -32,44 +33,7 @@ pipeline {
                 }
             }
         }
-        stage('Build & Push') {
-            steps {
-                script {
-                    sh """
-                        docker build -t "${env.DOCKER_REPO}:${env.TARGET_COLOR}" ./
-                        docker login -u ${env.USERNAME} -p ${env.TOKEN}
-                        docker push "${env.DOCKER_REPO}:${env.TARGET_COLOR}"
-                    """
-                }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                script {
-                    sh "export \$(cat .env | xargs) ; APP_IMAGE=${env.APP_IMAGE} docker compose -f ${env.COMPOSE_FILE} up -d app-${env.TARGET_COLOR}"
-                    waitForHealth("app-${env.TARGET_COLOR}")
-                    testApplication("app-${env.TARGET_COLOR}")
-                }
-            }
-        }
-        stage('Switch traffic') {
-            steps {
-                script {
-                    switchTraffic(env.TARGET_COLOR)
-                    env.CURRENT_COLOR = env.TARGET_COLOR
-                    updateCurrentColor(env.CURRENT_COLOR)
-                }
-            }
-        }
-        stage('Cleanup') {
-            steps {
-                script {
-                    def oldColor = (env.TARGET_COLOR == 'blue') ? 'green' : 'blue'
-                    sh "docker compose -f ${env.COMPOSE_FILE} stop app-${oldColor}"
-                    sh "docker compose -f ${env.COMPOSE_FILE} rm -f app-${oldColor}"
-                }
-            }
-        }
+        
     }
 }
 
