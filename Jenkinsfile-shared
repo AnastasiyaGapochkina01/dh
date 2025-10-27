@@ -11,7 +11,7 @@ pipeline {
   
   environment {
     DOCKER_REPO="anestesia01/dos-30"
-    TG_TOKEN=credentials('docker_token')
+    TG_TOKEN=credentials('bot-token')
     TG_CHAT="641041957"
   }
 
