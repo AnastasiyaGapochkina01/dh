@@ -4,7 +4,7 @@ def GIT_URL = "git@github.com:AnastasiyaGapochkina01/dh.git"
 pipeline {
   agent {label 'docker'}
   parameters {
-    gitParameter (type: 'PT_BRANCH', name: 'GIT_BRANCH', defaultValue: 'main', selectedValue: 'DEFAULT', sortMode: 'DESCENDING_SMART')
+    gitParameter (type: 'PT_BRANCH', name: 'GIT_BRANCH', branchFilter: 'origin/(.*)', defaultValue: 'main', selectedValue: 'DEFAULT', sortMode: 'DESCENDING_SMART')
   }
   
   environment {
