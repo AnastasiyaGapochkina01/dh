@@ -1,0 +1,61 @@
+@Library('shared-libs@main') _
+def GIT_URL = "git@github.com:AnastasiyaGapochkina01/dh.git"
+
+pipeline {
+  agent {label 'docker'}
+  parameters {
+    gitParameter (type: 'PT_BRANCH', name: 'GIT_BRANCH', defaultValue: 'main', selectedValue: 'DEFAULT', sortMode: 'DESCENDING_SMART')
+  }
+  
+  environment {
+    DOCKER_REPO="anestesia01/dos-30"
+    TG_TOKEN=credentials('docker_token')
+    TG_CHAT="641041957"
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        git branch: "${params.GIT_BRANCH}", url: "${GIT_URL}"
+      }
+    }
+
+    stage('Login to dockerhub') {
+      steps {
+        script {
+          dockerBuild.login()
+        }
+      }
+    }
+
+    stage('Build docker image') {
+      steps {
+        script {
+          def FULL_TAG = "${env.DOCKER_REPO}:dh-${BUILD_ID}"
+          dockerBuild.build(${FULL_TAG})
+        }
+      }
+    }
+
+    stage('Push image to dockerhub') {
+      steps {
+        script {
+          dockerBuild.push(${FULL_TAG})
+        }
+      }
+    }
+  }
+
+  post {
+    success {
+      script {
+        notifyTelegram("✅ Success build", env.TG_TOKEN, env.TG_CHAT)
+      }
+    }
+    failure {
+      script {
+        notifyTelegram("🔴 Failed build", env.TG_TOKEN, env.TG_CHAT)
+      }
+    }
+  }
+}
