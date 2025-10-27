@@ -50,12 +50,12 @@ pipeline {
   post {
     success {
       script {
-        notifyTelegram("✅ Success build", env.TG_TOKEN, env.TG_CHAT)
+        notifyTelegram(env.TG_TOKEN, env.TG_CHAT)
       }
     }
     failure {
       script {
-        notifyTelegram("🔴 Failed build", env.TG_TOKEN, env.TG_CHAT)
+        notifyTelegram(env.TG_TOKEN, env.TG_CHAT)
       }
     }
   }
